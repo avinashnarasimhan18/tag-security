@@ -174,19 +174,17 @@ This self-assessment is created to perform an internal analysis of the project's
 
    Along a similar vein, future work includes the implementation of end-to-end data encryption. The current implementation of Authnode does not support encryption of data in transit or at rest, only during communication. With the encryption keys managed and distributed by Authnode, end-to-end encryption can reduce data leaks once the data server is compromised. 
 
- * **Erasure Coding**
-
+ * **Erasure Coding** - 
    The support for Erasure Coding (EC) using Reed-Solomon encoding reduces data redundancy and optimizes storage costs, but also ensures a certain level of fault tolerance by breaking down data into fragments. Unlike replication, where multiple identical copies of the data are stored, erasure coding allows the original data to be reconstructed from a subset of the fragments and parity information. By mitigating the impact of data loss, erasure encoding helps make CubeFS a more secure system. If, for example, an attacker gains access to and compromises a subset of nodes, the system can still function and recover the original data from the remaining healthy nodes and parity information. This makes it more challenging for attackers to compromise or manipulate data by targeting a single point of failure.
 
  **Security Relevant** - 
 
-  * **Multiple Replicas**
-
+  * **Multiple Replicas** -
    CubeFS uses multiple replicas to meet multi-tenant requirements. The data between replicas is mirrored, and strong consistency replication protocols are utilized to ensure data consistency between different replicas. Users can flexibly configure different numbers of replicas according to their application scenarios. Though not a strategy whose main explicit purpose is security, there are nonetheless security benefits to it. By the redundancy of the design, the security of CubeFS is elevated as even if one replica becomes corrupted or unavailable by a fault or attack, by the user’s configuration there can be several backups of the same data to ensure performance is not compromised. As well, consider the following scenarios:
 
-   * In the case of a DDoS attack, where an attacker floods a system with a massive volume of requests to overwhelm and disrupt services, having multiple replicas helps distribute the incoming traffic. Load balancers can redirect requests across replicas, preventing a single point of failure and making it more challenging for attackers to overload a specific server.
+       * In the case of a DDoS attack, where an attacker floods a system with a massive volume of requests to overwhelm and disrupt services, having multiple replicas helps distribute the incoming traffic. Load balancers can redirect requests across replicas, preventing a single point of failure and making it more challenging for attackers to overload a specific server.
 
-   * Multiple replicas provide protection against attacks that aim to compromise data integrity. If one replica is targeted by a data manipulation attack, the other replicas can act as a reference to identify and rectify unauthorized changes, preserving the integrity of the data.
+       * Multiple replicas provide protection against attacks that aim to compromise data integrity. If one replica is targeted by a data manipulation attack, the other replicas can act as a reference to identify and rectify unauthorized changes, preserving the integrity of the data.
 
 ## Project compliance
 
@@ -250,27 +248,27 @@ The CubeFS team has defined a clear-cut process for how security issues, inciden
 
 * Case Studies -
 
-  * OPPO: OPPO is a Chinese electronics manufacturer that in 2021 was building a one-stop service for a large-scale machine learning platform for their brand. However, the challenge they faced was in training itself. To optimize costs they had built a hybrid GPU cloud which was inefficient when they started training. They solved this problem with CubeFS which accelerated their training 3 times. 
+  * **OPPO**: OPPO is a Chinese electronics manufacturer that in 2021 was building a one-stop service for a large-scale machine learning platform for their brand. However, the challenge they faced was in training itself. To optimize costs they had built a hybrid GPU cloud which was inefficient when they started training. They solved this problem with CubeFS which accelerated their training 3 times. 
 OPPO used Cube FS to store their data for Machine learning training iterating with multiple epochs. CubeFS provided OPPO with a fast cache when training, accelerating the training process. CubeFS centralized the datasets allowing better management for OPPO. Cube FS with cache acceleration utilized other ML Models to increase performance. Overall, Cube FS helped OPPO efficiently train their machine learning models without worrying about security issues in transferring data or worrying about clunky training with hybrid cloud GPU resources. (Full details can be found [here](https://cubefs.io/blog/case/oppo-ai.html#what-s-next-for-oppo))
 
 
-  * JD.com: JD.com uses a service called Elasticsearch which is an open-source distributed RESTful search engine. It can quickly store, search, and analyze large amounts of data. Currently, the production environment cluster scale exceeds 5000 servers. CubeFS is responsible for managing over 50 petabytes of data and is the default storage for applications deployed in the large-scale internal container platform. Large Businesses may write tens of millions of times per second as such, speed is key. CubeFS helps optimize these scenarios with its architecture and cache speeding up writes and access. Additionally, IO reads & writes are uneven, to solve this Elasticsearch used CubeFS to increase performance and scalability with CubeFS’s distributed file system. CubeFS Supports multiple read-write models and is compatible with different protocols allowing Elasticsearch to scale without many blocks. (Full Details can be found [here](https://cubefs.io/blog/case/elasticsearch.html#real-time-data-analysis-engine-to-form-statistical-reports))
+  * **JD.com**: JD.com uses a service called Elasticsearch which is an open-source distributed RESTful search engine. It can quickly store, search, and analyze large amounts of data. Currently, the production environment cluster scale exceeds 5000 servers. CubeFS is responsible for managing over 50 petabytes of data and is the default storage for applications deployed in the large-scale internal container platform. Large Businesses may write tens of millions of times per second as such, speed is key. CubeFS helps optimize these scenarios with its architecture and cache speeding up writes and access. Additionally, IO reads & writes are uneven, to solve this Elasticsearch used CubeFS to increase performance and scalability with CubeFS’s distributed file system. CubeFS Supports multiple read-write models and is compatible with different protocols allowing Elasticsearch to scale without many blocks. (Full Details can be found [here](https://cubefs.io/blog/case/elasticsearch.html#real-time-data-analysis-engine-to-form-statistical-reports))
 
 * Related Projects / Vendors -
 
-  * Red Hat GlusterFS: GlusterFS is a scalable network filesystem suitable for data-intensive tasks such as cloud storage and media streaming. GlusterFS is free and open-source software and can utilize common off-the-shelf hardware.
+  * **Red Hat GlusterFS**: GlusterFS is a scalable network filesystem suitable for data-intensive tasks such as cloud storage and media streaming. GlusterFS is free and open-source software and can utilize common off-the-shelf hardware.
 
     * Key differences - 
       * CubeFS has found use cases in Machine learning and aggregating data using its fast cache, whereas Gluster FS has found its use case in cloud computing, streaming media services and CDNs.
       * GlusterFS and CubeFS both support POSIX protocols however CubeFS has support for more protocols making it more widely accessible
 
-  * ObjectiveFS: Objective FS is a distributed file system that is POSIX compliant with an object store backend. It was initially released with an AWSS3 backend. The software is developed and maintained by Objective Security Corporation.
+  * **ObjectiveFS**: Objective FS is a distributed file system that is POSIX compliant with an object store backend. It was initially released with an AWSS3 backend. The software is developed and maintained by Objective Security Corporation.
 
     * Key differences -
       * ObjectiveFS Is not an open-source platform and is a for-profit database which is the opposite of CubeFS
       * Both file systems have support for POSIX and utilize AWS S3 however CubeFS has support for more protocols as well. 
 
-  * JuiceFS: Juice FS is a POSIX-compatible file system that is high-performance and under the Apache License. It is free and open source and has support for different access protocols. The metadata in the FS can be compatible with different database engines as well such as Redis, MySQL, and TiKV.
+  * **JuiceFS**: Juice FS is a POSIX-compatible file system that is high-performance and under the Apache License. It is free and open source and has support for different access protocols. The metadata in the FS can be compatible with different database engines as well such as Redis, MySQL, and TiKV.
     
      * Key differences -
        * Juice FS has support for data compression through LZ4 or Zstandard to compress your data.
